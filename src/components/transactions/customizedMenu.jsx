@@ -26,23 +26,21 @@ const StyledMenu = styled((props) => (
   />
 ))(({ theme }) => ({
   "& .MuiPaper-root": {
-    borderRadius: 6,
+    borderRadius: 16,
     marginTop: theme.spacing(1),
     minWidth: 270,
-    color: "blue",
-    backgroundColor: "#4e42fc",
-    // theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    color: theme.palette.text.primary,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
+    border: "1px solid",
+    borderColor: theme.palette.divider,
     "& .MuiMenu-list": {
       padding: "4px 0",
     },
     "& .MuiMenuItem-root": {
-      color: "#fff",
+      color: theme.palette.text.primary,
       "& .MuiSvgIcon-root": {
         fontSize: 18,
-
-        // color: theme.palette.text.secondary,
         marginRight: theme.spacing(1.5),
       },
       "&:active": {
@@ -51,6 +49,9 @@ const StyledMenu = styled((props) => (
           theme.palette.action.selectedOpacity
         ),
       },
+      "&:hover": {
+        backgroundColor: alpha(theme.palette.primary.main, 0.1),
+      }
     },
   },
 }));
@@ -79,11 +80,16 @@ export default function CustomizedMenus({ selectedToken, setselectedToken }) {
         sx={{
           width: "270px",
           minHeight: "45px",
-          backgroundColor: "#2745EA",
+          backgroundColor: "background.paper",
+          borderRadius: "16px",
+          border: "1px solid",
+          borderColor: "secondary.main",
           "&:hover": {
-            backgroundColor: "#2745EA",
+            backgroundColor: "background.paper",
+            borderColor: "primary.main",
           },
-          color: "#fff",
+          color: "text.primary",
+          fontWeight: "bold",
         }}
       >
         {selectedToken?.name ? selectedToken?.name : "Select Token"}
@@ -110,7 +116,7 @@ export default function CustomizedMenus({ selectedToken, setselectedToken }) {
           {/* <FileCopyIcon /> */}
           BNB
         </MenuItem>
-        <Divider sx={{ color: "#000" }} />
+        <Divider />
         <MenuItem
           onClick={() => {
             setselectedToken({ name: "CREST", token: tokenAddres });
@@ -120,7 +126,7 @@ export default function CustomizedMenus({ selectedToken, setselectedToken }) {
         >
           CREST
         </MenuItem>
-        <Divider sx={{ color: "#000" }} />
+        <Divider />
         <MenuItem
           onClick={() => {
             setselectedToken({ name: "USDT", token: usdtAddress });
@@ -131,7 +137,7 @@ export default function CustomizedMenus({ selectedToken, setselectedToken }) {
           {/* <FileCopyIcon /> */}
           USDT
         </MenuItem>
-        <Divider sx={{ color: "#000" }} />
+        <Divider />
       </StyledMenu>
     </div>
   );

@@ -17,6 +17,8 @@ import {
   Pagination,
   Stack,
   Typography,
+  InputBase,
+  Link
 } from "@mui/material";
 import { Container } from "@mui/system";
 import CustomizedMenus from "./customizedMenu";
@@ -313,406 +315,422 @@ export default function Transactions({ adminsArray, contractAdmin }) {
   };
   return (
     <Container maxWidth="xl">
-      <ToastNotify alertState={alertState} setAlertState={setAlertState} />
-      <Box pt={15}>
-        <Typography
-          variant="h5"
-          fontWeight="700"
-          fontSize={{ xs: "20px", sm: "36px" }}
-          textAlign="center"
-        >
-          MULTI SIGNATURE
-        </Typography>
-        <Divider
-          sx={{
-            borderColor: "white",
-            borderWidth: "1px",
-            width: { xs: "auto", sm: "40%" },
-            mx: "auto",
-            my: 2,
-          }}
-        />
-      </Box>
+        <ToastNotify alertState={alertState} setAlertState={setAlertState} />
+        <Box pt={15}>
+          <Typography
+            variant="h5"
+            fontWeight="700"
+            fontSize={{ xs: "20px", sm: "36px" }}
+            textAlign="center"
+            color="text.primary"
+          >
+            MULTI SIGNATURE
+          </Typography>
+          <Divider
+            sx={{
+              borderColor: "text.secondary",
+              borderWidth: "1px",
+              width: { xs: "auto", sm: "40%" },
+              mx: "auto",
+              my: 2,
+            }}
+          />
+        </Box>
 
-      <Container maxWidth="lg" sx={{ mb: "40px" }}>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          columnSpacing={5}
-          rowSpacing={3}
-        >
-          <Grid item xs={12} sm={6}>
-            <Stack
-              alignItems="center"
-              sx={{
-                border: "2px solid #fff",
-                borderRadius: "20px",
-                py: "30px",
-              }}
-            >
-              <Typography
-                variant="h5"
-                fontWeight="700"
-                fontSize={{ xs: "20px", sm: "36px" }}
-                textAlign="center"
+        <Container maxWidth="lg" sx={{ mb: "40px" }}>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            columnSpacing={5}
+            rowSpacing={3}
+          >
+            <Grid item xs={12} sm={6}>
+              <Stack
+                alignItems="center"
+                sx={{
+                  bgcolor: "background.paper",
+                  borderRadius: "24px",
+                  p: "30px",
+                  boxShadow: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
+                }}
               >
-                Initiate Transaction
-              </Typography>
-              <Box sx={{ mb: "20px" }}>
-                <CustomizedMenus
-                  selectedToken={selectedToken}
-                  setselectedToken={setselectedToken}
-                />
-              </Box>
-              <Box sx={{ border: "2px solid rgba(255, 255, 255, 0.11)" }}>
-                <input
-                  placeholder={`Amount in ${selectedToken?.name}`}
-                  type="number"
-                  value={tokenAmount}
-                  onChange={(e) => settokenAmount(e.target.value)}
-                  style={{
-                    border: "none",
-                    outline: "none",
-                    backgroundColor: "transparent",
-                    padding: "10px",
-                    color: "white",
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                    width: "100%",
-                  }}
-                />
-              </Box>
-              <Box mt={3}>
-                <LoadingButton
-                  variant="outlined"
-                  sx={{
-                    borderRadius: "10px",
-                    py: 1,
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                    background:
-                      "linear-gradient(90deg, #2745EA 2.94%, #CF7BF4 100%)",
-                    color: "#ffffff",
-                  }}
-                  fullWidth
-                  loadingPosition="end"
-                  loading={loading.initiatTxFn}
-                  disabled={loading.initiatTxFn}
-                  endIcon={<SendIcon />}
-                  onClick={initiateTransactionHandler}
+                <Typography
+                  variant="h5"
+                  fontWeight="700"
+                  fontSize={{ xs: "20px", sm: "36px" }}
+                  textAlign="center"
+                  color="text.primary"
                 >
-                  {loading.initiatTxFn ? "Processing" : "Initiate Transaction"}
-                </LoadingButton>
-              </Box>
-            </Stack>
-          </Grid>
-          {contractAdmin &&
-            contractAdmin.toLowerCase() === address.toLowerCase() && (
-              <Grid item xs={12} sm={6}>
-                <Stack
-                  alignItems="center"
-                  sx={{
-                    border: "2px solid #fff",
-                    borderRadius: "20px",
-                    py: "30px",
-                  }}
-                >
-                  <Typography
-                    variant="h5"
-                    fontWeight="700"
-                    fontSize={{ xs: "20px", sm: "36px" }}
-                    textAlign="center"
+                  Initiate Transaction
+                </Typography>
+                <Box sx={{ mb: "20px" }}>
+                  <CustomizedMenus
+                    selectedToken={selectedToken}
+                    setselectedToken={setselectedToken}
+                  />
+                </Box>
+                <Box sx={{ 
+                  border: "1px solid",
+                  borderColor: "secondary.main",
+                  borderRadius: "16px",
+                  bgcolor: "background.default",
+                  width: "100%",
+                  px: 2,
+                  py: 1
+                }}>
+                  <InputBase
+                    placeholder={`Amount in ${selectedToken?.name}`}
+                    type="number"
+                    value={tokenAmount}
+                    onChange={(e) => settokenAmount(e.target.value)}
+                    sx={{
+                      color: "text.primary",
+                      fontWeight: "bold",
+                      fontSize: "20px",
+                      width: "100%",
+                    }}
+                  />
+                </Box>
+                <Box mt={3} width="100%">
+                  <LoadingButton
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      borderRadius: "16px",
+                      py: 1.5,
+                      fontSize: "18px",
+                      fontWeight: "bold",
+                      boxShadow: "0px 4px 0px 0px #0e96a1",
+                      "&:hover": {
+                        boxShadow: "0px 2px 0px 0px #0e96a1",
+                        transform: "translateY(2px)"
+                      }
+                    }}
+                    fullWidth
+                    loadingPosition="end"
+                    loading={loading.initiatTxFn}
+                    disabled={loading.initiatTxFn}
+                    endIcon={<SendIcon />}
+                    onClick={initiateTransactionHandler}
                   >
-                    Add or Remove Admin
-                  </Typography>
-                  <Box sx={{ border: "2px solid rgba(255, 255, 255, 0.11)" }}>
-                    <input
-                      placeholder="Bep20 wallet Address"
-                      type="text"
-                      style={{
-                        border: "none",
-                        outline: "none",
-                        backgroundColor: "transparent",
-                        padding: "10px",
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: "20px",
-                        width: "100%",
-                      }}
-                      value={adminAddress}
-                      onChange={(e) => setadminAddress(e.target.value)}
-                    />
-                  </Box>
-                  <Box mt={3}>
-                    <LoadingButton
-                      variant="outlined"
-                      sx={{
-                        borderRadius: "10px",
-                        py: 1,
-                        fontSize: "18px",
-                        fontWeight: "bold",
-                        background:
-                          "linear-gradient(90deg, #2745EA 2.94%, #CF7BF4 100%)",
-                        color: "#ffffff",
-                      }}
-                      fullWidth
-                      loadingPosition="end"
-                      loading={loading.addOrRemoveFn}
-                      disabled={loading.addOrRemoveFn}
-                      endIcon={<SendIcon />}
-                      onClick={changeAdminHandler}
+                    {loading.initiatTxFn ? "Processing" : "Initiate Transaction"}
+                  </LoadingButton>
+                </Box>
+              </Stack>
+            </Grid>
+            {contractAdmin &&
+              contractAdmin.toLowerCase() === address.toLowerCase() && (
+                <Grid item xs={12} sm={6}>
+                  <Stack
+                    alignItems="center"
+                    sx={{
+                      bgcolor: "background.paper",
+                      borderRadius: "24px",
+                      p: "30px",
+                      boxShadow: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      fontWeight="700"
+                      fontSize={{ xs: "20px", sm: "36px" }}
+                      textAlign="center"
+                      color="text.primary"
                     >
-                      {adminsArray?.includes(adminAddress.toLowerCase())
-                        ? loading.addOrRemoveFn
+                      Add or Remove Admin
+                    </Typography>
+                    <Box sx={{ 
+                      border: "1px solid",
+                      borderColor: "secondary.main",
+                      borderRadius: "16px",
+                      bgcolor: "background.default",
+                      width: "100%",
+                      px: 2,
+                      py: 1
+                    }}>
+                      <InputBase
+                        placeholder="Bep20 wallet Address"
+                        type="text"
+                        sx={{
+                          color: "text.primary",
+                          fontWeight: "bold",
+                          fontSize: "20px",
+                          width: "100%",
+                        }}
+                        value={adminAddress}
+                        onChange={(e) => setadminAddress(e.target.value)}
+                      />
+                    </Box>
+                    <Box mt={3} width="100%">
+                      <LoadingButton
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          borderRadius: "16px",
+                          py: 1.5,
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          boxShadow: "0px 4px 0px 0px #0e96a1",
+                          "&:hover": {
+                            boxShadow: "0px 2px 0px 0px #0e96a1",
+                            transform: "translateY(2px)"
+                          }
+                        }}
+                        fullWidth
+                        loadingPosition="end"
+                        loading={loading.addOrRemoveFn}
+                        disabled={loading.addOrRemoveFn}
+                        endIcon={<SendIcon />}
+                        onClick={changeAdminHandler}
+                      >
+                        {adminsArray?.includes(adminAddress.toLowerCase())
+                          ? loading.addOrRemoveFn
+                            ? "Processing"
+                            : "Remove Admin"
+                          : loading.addOrRemoveFn
                           ? "Processing"
-                          : "Remove Admin"
-                        : loading.addOrRemoveFn
-                        ? "Processing"
-                        : "Add Admin"}
-                    </LoadingButton>
-                  </Box>
-                </Stack>
-              </Grid>
-            )}
-        </Grid>
-      </Container>
-
-      <Paper
-        sx={{
-          width: "100%",
-          overflow: "hidden",
-          backgroundColor: "transparent",
-          margin: "auto 0",
-          boxShadow: "none",
-        }}
-        align="center"
-      >
-        <TableContainer sx={{ maxHeight: "700px", maxWidth: "100%" }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead sx={{ backgroundColor: "#2745EA" }}>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    sx={{
-                      color: "#ffffff",
-                      backgroundColor: "#2745EA",
-                      borderBottom: "1px solid #171F66",
-                      fontSize: "16px",
-                      fontFamily: "Open Sans",
-                      fontWeight: "700",
-                    }}
-                    key={column.id}
-                    //   align={column.align}
-                    align="center"
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {loading.fetchingTxData ? (
-                <TableRow hover role="checkbox" tabIndex={-1}>
-                  <TableCell
-                    align="center"
-                    //    align={column.align}
-                    colSpan={7}
-                    sx={{
-                      color: "#ffffff",
-                      fontSize: "12px",
-                      fontFamily: "Open Sans",
-                      backgroundColor: "rgba(32, 42, 128, 0.79)",
-                      fontWeight: "400",
-                      border: "1px solid #171F66",
-                    }}
-                  >
-                    <CircularProgress size={100} sx={{ color: "white" }} />
-                  </TableCell>
-                </TableRow>
-              ) : (
-                transactions.map(
-                  (
-                    {
-                      Token,
-                      amount,
-                      to,
-                      time,
-                      isExecuted,
-                      isApproved,
-                      isRejected,
-                      approveCount,
-                      rejectCount,
-                      countIndex,
-                    },
-                    index
-                  ) => {
-                    return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          <a
-                            href={`https://bscscan.com/address/${to}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "white" }}
-                          >
-                            {to.slice(0, 4) + "..." + to.slice(0, 4)}
-                          </a>
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          {amount}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          {Token}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          {moment.unix(time).format("lll")}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          <Stack alignItems="center">
-                            <Typography
-                              variant="body2"
-                              fontWeight="700"
-                              fontSize="12px"
-                              textAlign="center"
-                            >
-                              Approval {approveCount}
-                            </Typography>
-                            <ApproveBtn
-                              countIndex={countIndex}
-                              time={time}
-                              getTransactionsData={getTransactionsData}
-                            />
-                          </Stack>
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          <Stack alignItems="center">
-                            <Typography
-                              variant="body2"
-                              fontWeight="700"
-                              fontSize="12px"
-                              textAlign="center"
-                            >
-                              Rejects {rejectCount}
-                            </Typography>
-                            <RejectBtn
-                              countIndex={countIndex}
-                              time={time}
-                              getTransactionsData={getTransactionsData}
-                            />
-                          </Stack>
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          //    align={column.align}
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "12px",
-                            fontFamily: "Open Sans",
-                            backgroundColor: "#4e42fc",
-                            fontWeight: "400",
-                            border: "1px solid #171F66",
-                          }}
-                        >
-                          <Stack alignItems="center">
-                            <Typography
-                              variant="body2"
-                              fontWeight="700"
-                              fontSize="12px"
-                              textAlign="center"
-                            >
-                              {time > +moment().format("X")
-                                ? "Pending"
-                                : isApproved
-                                ? "Approved"
-                                : isRejected
-                                ? "Rejected"
-                                : isExecuted
-                                ? "Executed"
-                                : "No Result"}
-                            </Typography>
-                            <ExecuteBtn
-                              countIndex={countIndex}
-                              time={time}
-                              getTransactionsData={getTransactionsData}
-                            />
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }
-                )
+                          : "Add Admin"}
+                      </LoadingButton>
+                    </Box>
+                  </Stack>
+                </Grid>
               )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          </Grid>
+        </Container>
+
+        <Paper
+          sx={{
+            width: "100%",
+            overflow: "hidden",
+            backgroundColor: "background.paper",
+            margin: "auto 0",
+            borderRadius: "24px",
+            boxShadow: "0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)",
+          }}
+          align="center"
+        >
+          <TableContainer sx={{ maxHeight: "700px", maxWidth: "100%" }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      sx={{
+                        color: "secondary.main",
+                        backgroundColor: "background.paper",
+                        borderBottom: "1px solid",
+                        borderColor: "divider",
+                        fontSize: "16px",
+                        fontFamily: "Open Sans",
+                        fontWeight: "700",
+                        textTransform: "uppercase"
+                      }}
+                      key={column.id}
+                      //   align={column.align}
+                      align="center"
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {loading.fetchingTxData ? (
+                  <TableRow hover role="checkbox" tabIndex={-1}>
+                    <TableCell
+                      align="center"
+                      colSpan={7}
+                      sx={{
+                        color: "text.primary",
+                        fontSize: "14px",
+                        fontFamily: "Open Sans",
+                        fontWeight: "400",
+                        borderBottom: "1px solid",
+                        borderColor: "divider",
+                      }}
+                    >
+                      <CircularProgress size={100} sx={{ color: "primary.main" }} />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  transactions.map(
+                    (
+                      {
+                        Token,
+                        amount,
+                        to,
+                        time,
+                        isExecuted,
+                        isApproved,
+                        isRejected,
+                        approveCount,
+                        rejectCount,
+                        countIndex,
+                      },
+                      index
+                    ) => {
+                      return (
+                        <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            <a
+                              href={`https://bscscan.com/address/${to}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ textDecoration: "none" }}
+                            >
+                              <Box component="span" sx={{ color: "primary.main" }}>
+                                {to.slice(0, 6) + "..." + to.slice(-4)}
+                              </Box>
+                            </a>
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            {amount}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            {Token}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            {moment.unix(time).format("lll")}
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            <Stack alignItems="center">
+                              <Typography
+                                variant="body2"
+                                fontWeight="700"
+                                fontSize="14px"
+                                textAlign="center"
+                              >
+                                Approves {approveCount}
+                              </Typography>
+                              <ApproveBtn
+                                countIndex={countIndex}
+                                time={time}
+                                getTransactionsData={getTransactionsData}
+                              />
+                            </Stack>
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            <Stack alignItems="center">
+                              <Typography
+                                variant="body2"
+                                fontWeight="700"
+                                fontSize="14px"
+                                textAlign="center"
+                              >
+                                Rejects {rejectCount}
+                              </Typography>
+                              <RejectBtn
+                                countIndex={countIndex}
+                                time={time}
+                                getTransactionsData={getTransactionsData}
+                              />
+                            </Stack>
+                          </TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{
+                              color: "text.primary",
+                              fontSize: "14px",
+                              fontFamily: "Open Sans",
+                              fontWeight: "400",
+                              borderBottom: "1px solid",
+                              borderColor: "divider",
+                            }}
+                          >
+                            <Stack alignItems="center">
+                              <Typography
+                                variant="body2"
+                                fontWeight="700"
+                                fontSize="14px"
+                                textAlign="center"
+                              >
+                                {time > +moment().format("X")
+                                  ? "Pending"
+                                  : isApproved
+                                  ? "Approved"
+                                  : isRejected
+                                  ? "Rejected"
+                                  : isExecuted
+                                  ? "Executed"
+                                  : "No Result"}
+                              </Typography>
+                              <ExecuteBtn
+                                countIndex={countIndex}
+                                time={time}
+                                getTransactionsData={getTransactionsData}
+                              />
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    }
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
         {/* <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
@@ -734,11 +752,15 @@ export default function Transactions({ adminsArray, contractAdmin }) {
             page={page}
             sx={{
               ".MuiPaginationItem-text": {
-                color: "#ffffff",
-                fontSize: "12px",
+                color: "text.primary",
+                fontSize: "14px",
                 fontFamily: "Open Sans",
               },
-              ".MuiPaginationItem-previousNext": { backgroundColor: "#F1620A" },
+              ".MuiPaginationItem-previousNext": { backgroundColor: "primary.main" },
+              ".Mui-selected": {
+                backgroundColor: "secondary.main",
+                color: "white"
+              }
             }}
           />
         </Box>

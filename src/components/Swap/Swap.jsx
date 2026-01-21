@@ -4,6 +4,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  InputBase,
   Menu,
   MenuItem,
   Stack,
@@ -51,8 +52,7 @@ export const Swap = () => {
   const [tokenDecimalCache, setTokenDecimalCache] = useState(null)
 
   const open = Boolean(anchorEl)
-  const italicUSDT = <Typography sx={{ fontWeight: '700' }}>USDT</Typography>
-  const [selectToken, setselectToken] = useState(italicUSDT)
+  const [selectToken, setselectToken] = useState('USDT')
   const [alertState, setAlertState] = useState({
     open: false,
     message: '',
@@ -367,77 +367,93 @@ export const Swap = () => {
         <Grid item xs={12} sm={12} md={5}>
           <Box
             sx={{
-              background: '#0B0B0B',
-              boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-              borderRadius: '30px',
-              py: 1,
-              px: 4,
-              borderTop: '4px solid #D39900',
-              borderRight: '2px solid #634901',
-              borderBottom: 'none',
-              borderLeft: '2px solid #634901',
+              background: (theme) => theme.palette.background.paper,
+              boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+              borderRadius: '24px',
+              p: 3,
+              border: '1px solid',
+              borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'transparent'
             }}
           >
-            <Box display='flex' justifyContent='space-between'>
-              <Typography variant='h5' color='#ffffff'>
-                The Crest Swap
-              </Typography>{' '}
+            <Box display='flex' justifyContent='space-between' alignItems="center" mb={2}>
+              <Typography variant='h5' fontWeight={700}>
+                Swap
+              </Typography>
+              <IconButton sx={{ color: 'text.secondary' }}>
+                 <RefreshIcon />
+              </IconButton>
             </Box>
+            
+            {/* Buy/Sell Toggle - Styled like Pancake Tabs */}
             <Box
               sx={{
-                background: '#1E1E2D',
-                borderRadius: '20px',
-                border: '1px solid rgba(255, 255, 255, 0.11)',
-                py: '7px',
-                my: '10px',
+                background: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#eff4f5',
+                borderRadius: '16px',
+                p: '4px',
+                mb: 3,
+                display: 'flex'
               }}
             >
-              <Stack direction='row' justifyContent='space-around'>
                 <Button
+                  fullWidth
+                  variant={buyPosition ? 'contained' : 'text'}
+                  color={buyPosition ? 'primary' : 'inherit'}
                   sx={{
-                    background: buyPosition ? '#D39900' : '#7B7B7B',
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    px: '35px',
-                    borderRadius: '20px',
-                    '&:hover': {
-                      background: '#D39900',
-                    },
+                    borderRadius: '12px',
+                    color: buyPosition ? 'white' : 'text.secondary',
+                    boxShadow: buyPosition ? 1 : 0,
+                    transition: 'all 0.3s'
                   }}
                   onClick={() => setbuyPosition(true)}
-                  mt={2}
                 >
                   Buy
                 </Button>
                 <Button
+                  fullWidth
+                  variant={!buyPosition ? 'contained' : 'text'}
+                  color={!buyPosition ? 'primary' : 'inherit'} // Use primary for sell too, or secondary if preferred
                   sx={{
-                    background: buyPosition ? '#7B7B7B' : '#D39900',
-                    fontSize: '13px',
-                    fontWeight: '700',
-                    px: '35px',
-                    borderRadius: '20px',
-                    '&:hover': {
-                      background: '#D39900',
-                    },
+                    borderRadius: '12px',
+                    color: !buyPosition ? 'white' : 'text.secondary',
+                    boxShadow: !buyPosition ? 1 : 0,
+                    transition: 'all 0.3s'
                   }}
                   onClick={() => setbuyPosition(false)}
                 >
                   Sell
                 </Button>
-              </Stack>
             </Box>
-            <Box sx={{ my: '15px' }}></Box>
-            <Typography variant='body1' color='#fff' fontWeight='600'>
-              From
-            </Typography>
-            <Stack
+            
+            <Box
               sx={{
-                px: '10px',
-                border: '1px solid rgba(255, 255, 255, 0.11)',
-                borderRadius: '30px',
-                backgroundColor: '#1E1E2D',
-                my: 1,
+                background: 'rgba(0, 0, 0, 0.2)',
+                borderRadius: '24px',
+                p: 2,
+                mb: 1,
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    borderColor: 'rgba(31, 199, 212, 0.3)'
+                }
               }}
+            >
+            <Box display='flex' justifyContent='space-between' mb={1}>
+                <Typography variant='caption' sx={{ letterSpacing: '1px', fontWeight: 700, color: 'text.secondary' }}>
+                  FROM
+                </Typography>
+                <Typography variant='caption' sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                  {!address
+                    ? `Balance: 0`
+                    : buyPosition
+                    ? selectToken === 'BNB'
+                      ? `Balance: ${bnbBalance} BNB`
+                      : `Balance: ${usdtBalance} USDT`
+                    : `Balance: ${tctBalance} TCT`}
+                </Typography>
+            </Box>
+
+            <Stack
               direction='row'
               alignItems='center'
               spacing={2}
@@ -452,7 +468,9 @@ export const Swap = () => {
                 }}
                 sx={{
                   '& .MuiPaper-root': {
-                    backgroundColor: 'rgba(9, 9, 11, 0.7)',
+                    backgroundColor: 'background.paper',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(255,255,255,0.1)'
                   },
                 }}
               >
@@ -461,28 +479,8 @@ export const Swap = () => {
                     handleClose()
                     setselectToken('BNB')
                   }}
-                  sx={{
-                    background: 'transparent',
-                  }}
                 >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Box
-                      px='10px'
-                      sx={{
-                        fontFamily: "'Poppins'",
-                        fontWeight: 400,
-                        fontSize: { xs: '15px', sm: '20px' },
-                        color: '#848484',
-                      }}
-                    >
-                      BNB
-                    </Box>
-                  </Box>
+                    <Box px={1} fontWeight={700}>BNB</Box>
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
@@ -490,219 +488,149 @@ export const Swap = () => {
                     handleClose()
                   }}
                 >
-                  {' '}
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Box
-                      px='10px'
-                      sx={{
-                        fontFamily: "'Poppins'",
-                        fontWeight: 400,
-                        fontSize: { xs: '15px', sm: '20px' },
-                        color: '#848484',
-                      }}
-                    >
-                      USDT
-                    </Box>
-                  </Box>
+                    <Box px={1} fontWeight={700}>USDT</Box>
                 </MenuItem>
               </Menu>
-              <Box
-                sx={{
-                  display: 'flex',
-                }}
-              >
-                <input
-                  placeholder={
-                    !address
-                      ? `Balance : 0`
-                      : buyPosition
-                      ? selectToken === 'BNB'
-                        ? `Balance: ${bnbBalance} BNB`
-                        : `Balance: ${usdtBalance} USDT`
-                      : `Balance: ${tctBalance} TCT`
-                  }
+              <Box sx={{ flexGrow: 1 }}>
+                <InputBase
+                  placeholder="0.0"
                   type='number'
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    backgroundColor: 'transparent',
-                    padding: '10px',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: '20px',
+                  sx={{
+                    color: 'text.primary',
+                    fontWeight: 800,
+                    fontSize: '28px',
                     width: '100%',
+                    '& input': { p: 0 }
                   }}
-                  min='0'
                   value={fromAmount}
                   onChange={(e) => setfromAmount(e.target.value)}
                 />
               </Box>
-              <IconButton onClick={buyPosition ? handleClick : null}>
-                <Box
-                  sx={{
-                    background: 'transparent',
+              
+              <Button 
+                onClick={buyPosition ? handleClick : null}
+                variant="contained"
+                color={buyPosition ? "primary" : "secondary"}
+                endIcon={<KeyboardArrowDownIcon />}
+                sx={{
+                    borderRadius: '20px',
+                    px: 3,
                     py: 1,
-                    px: 4,
-                    borderRadius: '10px',
-                    display: 'flex',
-                  }}
-                  direction='row'
-                  alignItems='center'
-                  spacing={1}
-                >
-                  <Typography
-                    variant='h3'
-                    fontWeight='700'
-                    fontSize='15px'
-                    textAlign='center'
-                    color='#848484'
-                  >
-                    {buyPosition ? selectToken : 'TCT'}
-                  </Typography>
-                  <Box>
-                    <Box
-                      sx={{
-                        backgroundColor: '#D39900',
-                        borderRadius: '50%',
-                        width: '30px',
-                        height: '29px',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        ml: 1,
-                      }}
-                    >
-                      <KeyboardArrowDownIcon
-                        sx={{
-                          fontSize: '30px',
-                          color: 'black', // or any color you want for the arrow
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-              </IconButton>
+                    fontWeight: 800,
+                    minWidth: '140px'
+                }}
+              >
+                {buyPosition ? selectToken : 'TCT'}
+              </Button>
             </Stack>
-            <Typography variant='body1' textAlign='center'>
-              <IconButton onClick={() => setbuyPosition(!buyPosition)}>
-                <Box
-                  sx={{
-                    backgroundColor: '#D39900',
-                    borderRadius: '50%',
-                    width: '30px',
-                    height: '29px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <RefreshIcon
-                    sx={{
-                      fontSize: '20px',
-                      color: 'black', // or any color you want for the arrow
-                    }}
-                  />
-                </Box>
-              </IconButton>
-            </Typography>
-            <Typography variant='body1' color='#fff' fontWeight='600'>
-              To
-            </Typography>
+            </Box>
 
-            <Stack
+            <Box display="flex" justifyContent="center" my={-2} sx={{ position: 'relative', zIndex: 2 }}>
+              <IconButton 
+                onClick={() => setbuyPosition(!buyPosition)}
+                sx={{ 
+                    background: (theme) => theme.palette.background.default,
+                    border: '4px solid',
+                    borderColor: (theme) => theme.palette.background.paper,
+                    width: '40px',
+                    height: '40px',
+                    '&:hover': {
+                        background: (theme) => theme.palette.primary.main,
+                        '& svg': { color: 'white' }
+                    }
+                }}
+              >
+                 <RefreshIcon sx={{ color: 'primary.main', fontSize: '20px' }} />
+              </IconButton>
+            </Box>
+
+            <Box
               sx={{
-                px: '10px',
-                border: '1px solid rgba(255, 255, 255, 0.11)',
-                borderRadius: '30px',
-                backgroundColor: '#1E1E2D',
-                my: 1,
+                background: 'rgba(0, 0, 0, 0.2)',
+                borderRadius: '24px',
+                p: 2,
+                mb: 1,
+                mt: 2,
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                    background: 'rgba(0, 0, 0, 0.3)',
+                    borderColor: 'rgba(31, 199, 212, 0.3)'
+                }
               }}
+            >
+            <Box display='flex' justifyContent='space-between' mb={1}>
+                <Typography variant='caption' sx={{ letterSpacing: '1px', fontWeight: 700, color: 'text.secondary' }}>
+                  TO
+                </Typography>
+                <Typography variant='caption' sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                  {!address
+                    ? `Balance: 0`
+                    : buyPosition
+                    ? `Balance: ${tctBalance} TCT`
+                    : selectToken === 'BNB'
+                    ? `Balance: ${bnbBalance} BNB`
+                    : `Balance: ${usdtBalance} USDT`}
+                </Typography>
+            </Box>
+            
+            <Stack
               direction='row'
               alignItems='center'
-              spacing={0}
+              spacing={2}
             >
-              <Box display='flex' flexGrow={1}>
-                <input
-                  placeholder={
-                    tctPrice === 'Error'
-                      ? 'Error fetching price'
-                      : tctPrice === '0'
-                      ? 'Loading...'
-                      : address
-                      ? `Balance: ${
-                          !buyPosition
-                            ? selectToken === 'BNB'
-                              ? `${bnbBalance} BNB`
-                              : `${usdtBalance} USDT`
-                            : `${tctBalance} TCT`
-                        }`
-                      : `Balance : 0`
-                  }
+              <Box sx={{ flexGrow: 1 }}>
+                <InputBase
+                  placeholder="0.0"
                   type='number'
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                    backgroundColor: 'transparent',
-                    padding: '10px',
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: '20px',
+                  readOnly
+                  sx={{
+                    color: 'text.primary',
+                    fontWeight: 800,
+                    fontSize: '28px',
                     width: '100%',
+                    '& input': { p: 0 }
                   }}
                   value={toAmount}
-                  readOnly
                 />
+                {loading && (
+                    <Typography variant="caption" color="primary">
+                        Calculating...
+                    </Typography>
+                )}
               </Box>
-              <IconButton onClick={buyPosition ? null : handleClick}>
-                <Box
+
+                <Button
+                  onClick={buyPosition ? null : handleClick}
+                  variant="contained"
+                  color={!buyPosition ? "primary" : "secondary"}
                   sx={{
-                    background: 'transparent',
-                    // py: 1,
-                    px: 5,
-                    borderRadius: '10px',
-                    display: 'flex',
+                    borderRadius: '20px',
+                    px: 3,
+                    py: 1,
+                    fontWeight: 800,
+                    minWidth: '140px'
                   }}
-                  direction='row'
-                  spacing={2}
-                >
-                  <Typography
-                    variant='h3'
-                    fontWeight='600'
-                    fontSize='15px'
-                    textAlign='center'
-                    color='#848484'
-                  >
-                    {buyPosition ? 'TCT' : selectToken}
-                  </Typography>
-                  <Box>
+                  endIcon={
                     <Box
                       sx={{
-                        backgroundColor: '#D39900',
+                        backgroundColor: 'rgba(255,255,255,0.2)',
                         borderRadius: '50%',
-                        width: '30px',
-                        height: '29px',
+                        width: '24px',
+                        height: '24px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        ml: 2,
                       }}
                     >
-                      <KeyboardArrowDownIcon
-                        sx={{
-                          fontSize: '30px',
-                          color: 'black', // or any color you want for the arrow
-                        }}
-                      />
+                      <KeyboardArrowDownIcon sx={{ color: 'white', fontSize: '20px' }} />
                     </Box>
-                  </Box>
-                </Box>
-              </IconButton>
-            </Stack>
+                  }
+                >
+                  {buyPosition ? 'TCT' : selectToken}
+                </Button>
+              </Stack>
+            </Box>
 
             <Box
               display='flex'
@@ -711,71 +639,42 @@ export const Swap = () => {
               my={3}
             >
               <LoadingButton
-                variant='outlined'
-                sx={{
-                  borderRadius: '20px',
-                  fontSize: '18px',
-                  fontWeight: 'bold',
-                  background: '#D39900',
-                  color: '#ffffff',
-                  border: '1px solid transparent',
-                  '&:hover': {
-                    background: '#D39900',
-                    color: '#ffffff',
-                    border: '1px solid transparent',
-                  },
-                }}
+                variant='contained'
                 fullWidth
+                size="large"
+                sx={{
+                  borderRadius: '24px',
+                  fontSize: '20px',
+                  fontWeight: '800',
+                  py: 2,
+                  background: 'linear-gradient(90deg, #1FC7D4 0%, #7645D9 100%)',
+                  boxShadow: '0px 0px 20px rgba(31, 199, 212, 0.5)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                     transform: 'scale(1.02)',
+                     boxShadow: '0px 0px 30px rgba(118, 69, 217, 0.6)',
+                  }
+                }}
                 loading={loading}
                 disabled={loading}
-                startIcon={
-                  <Box
-                    sx={{
-                      backgroundColor: '#ffffff',
-                      borderRadius: '50%',
-                      width: '30px',
-                      height: '29px',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <RefreshIcon
-                      sx={{
-                        fontSize: '20px',
-                        color: '#D39900',
-                      }}
-                    />
-                  </Box>
-                }
-                endIcon={
-                  <ReplyIcon
-                    sx={{
-                      transform: 'scaleX(-1)',
-                      width: '40px',
-                      height: '30px',
-                    }}
-                  />
-                }
                 onClick={address ? orderHandler : connectFn}
-                loadingPosition='end'
               >
                 {address
                   ? loading
-                    ? 'Processing'
-                    : 'convert'
-                  : 'Connect Wallet'}
+                    ? 'Processing...'
+                    : 'SWAP'
+                  : 'CONNECT WALLET'}
               </LoadingButton>
             </Box>
           </Box>
         </Grid>
 
         <Grid item xs={12} sm={12} md={5}>
-          <Box display='flex' justifyContent='center'>
-            <Typography variant='h2' color='#D39900'>
+          <Box display='flex' justifyContent='center' mb={2}>
+            <Typography variant='h5' color='primary' fontWeight={700}>
               TCT PRICE:{' '}
               {tctPrice === 'Error'
-                ? 'Error fetching price'
+                ? 'Error'
                 : tctPrice === '0'
                 ? 'Loading...'
                 : `${tctPrice} USDT`}
@@ -784,113 +683,64 @@ export const Swap = () => {
 
           <Box
             sx={{
-              borderBottom: '3px solid #D39900',
-              borderRight: '1px solid #D39900',
-              borderTop: 'none',
-              borderLeft: '1px solid #D39900',
-              borderRadius: '30px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0px 20px 40px rgba(0,0,0,0.2)',
+              borderRadius: '32px',
+              p: 3,
+              border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
             <Container maxWidth='sm'>
-              <Box
-                sx={{
-                  borderRadius: '20px',
-                  pt: 1,
-                  mt: 3,
-                }}
-              >
-                <Box sx={{ borderRadius: '20px', background: '#D39900' }}>
+              <Box mb={2}>
                   <Typography
-                    mt={2}
                     textAlign='center'
-                    variant='h2'
-                    color='#fff'
-                    sx={{ fontSize: '20px' }}
+                    variant='h6'
+                    color='text.primary'
+                    fontWeight={700}
+                    sx={{ textTransform: 'uppercase', letterSpacing: '1px' }}
                   >
                     Pool Reserves
                   </Typography>
-                </Box>
               </Box>
               <Stack
                 direction='row'
                 alignItems='center'
                 justifyContent='space-between'
-                sx={{ mt: '20px' }}
+                sx={{ mt: 2 }}
               >
-                <Typography variant='h6' fontWeight='bold' color='#ffffff'>
+                <Typography variant='body1' fontWeight='600' color='text.secondary'>
                   BNB Balance
                 </Typography>
-                <Box
-                  sx={{
-                    background: '#1E1E2D',
-                    border: 'transparent',
-                    borderRadius: '20px',
-                    px: '30px',
-                  }}
-                >
-                  <Typography
-                    variant='h6'
-                    fontWeight='bold'
-                    color='#ffffff'
-                    fontStyle='italic'
-                  >
+                <Typography variant='body1' fontWeight='700' color='text.primary'>
                     {getCommas(poolReserves.bnbBalance)} BNB
-                  </Typography>
-                </Box>
+                </Typography>
               </Stack>
               <Stack
                 direction='row'
                 alignItems='center'
                 justifyContent='space-between'
-                sx={{ mt: '20px' }}
+                sx={{ mt: 2 }}
               >
-                <Typography variant='h6' fontWeight='bold' color='#ffffff'>
+                <Typography variant='body1' fontWeight='600' color='text.secondary'>
                   USDT Balance
                 </Typography>
-                <Box
-                  sx={{
-                    background: '#1E1E2D',
-                    border: 'transparent',
-                    borderRadius: '20px',
-                    px: '30px',
-                  }}
-                >
-                  <Typography
-                    variant='h6'
-                    fontWeight='bold'
-                    color='#ffffff'
-                    fontStyle='italic'
-                  >
+                <Typography variant='body1' fontWeight='700' color='text.primary'>
                     {getCommas(poolReserves.busdBalance)} USDT
-                  </Typography>
-                </Box>
+                </Typography>
               </Stack>
               <Stack
                 direction='row'
                 alignItems='center'
                 justifyContent='space-between'
-                sx={{ my: '20px' }}
+                sx={{ my: 2 }}
               >
-                <Typography variant='h6' fontWeight='bold' color='#ffffff'>
+                <Typography variant='body1' fontWeight='600' color='text.secondary'>
                   TCT Balance
                 </Typography>
-                <Box
-                  sx={{
-                    background: '#1E1E2D',
-                    border: 'transparent',
-                    borderRadius: '20px',
-                    px: '30px',
-                  }}
-                >
-                  <Typography
-                    variant='h6'
-                    fontWeight='bold'
-                    color='#ffffff'
-                    fontStyle='italic'
-                  >
+                <Typography variant='body1' fontWeight='700' color='text.primary'>
                     {getCommas(poolReserves.tctBalance)} TCT
-                  </Typography>
-                </Box>
+                </Typography>
               </Stack>
             </Container>
           </Box>
@@ -902,16 +752,21 @@ export const Swap = () => {
               mt={3}
             >
               <Button
+                variant="contained"
+                fullWidth
+                size="large"
                 sx={{
-                  backgroundColor: '#D39900',
-                  '&:hover': {
-                    backgroundColor: '#D39900',
-                  },
-                  px: 7,
-                  py: 1,
-                  borderRadius: '30px',
-                  fontWeight: '700',
+                  borderRadius: '24px',
                   fontSize: '18px',
+                  fontWeight: '800',
+                  py: 2,
+                  background: 'linear-gradient(90deg, #7645D9 0%, #452a7a 100%)',
+                  boxShadow: '0px 0px 20px rgba(118, 69, 217, 0.5)',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                     transform: 'scale(1.02)',
+                     boxShadow: '0px 0px 30px rgba(118, 69, 217, 0.7)',
+                  }
                 }}
               >
                 BUY USDT

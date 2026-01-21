@@ -64,26 +64,25 @@ export default function ExecuteBtn({ countIndex, time, getTransactionsData }) {
     <>
       <ToastNotify alertState={alertState} setAlertState={setAlertState} />
       <LoadingButton
-        sx={{
-          fontWeight: 400,
-          textTransform: "capitalize",
-          backgroundColor: "#127a09",
-          "&:hover": {
-            backgroundColor: "#127a09a1",
-          },
-          border: "1px solid black",
-          boxShadow: "0px 4px 18px rgba(0, 0, 0, 0.25)",
-          color: "#ffffff",
-          fontSize: "16px",
-          fontFamily: ["Russo One", "sans-serif", "sans-serif"].join(","),
-          borderRadius: "47px",
-        }}
+        variant="contained"
+        color="success"
         fullWidth
         loadingPosition="end"
         loading={loading}
         disabled={loading || +time > +moment().format("X")}
         endIcon={<SendIcon />}
         onClick={executeHandler}
+        sx={{
+          fontSize: "16px",
+          height: "40px",
+          borderRadius: "16px",
+          boxShadow: "0px 2px 0px 0px #1b9173", // Darker green shadow
+          color: "white",
+          "&:hover": {
+            boxShadow: "0px 1px 0px 0px #1b9173",
+            transform: "translateY(1px)",
+          },
+        }}
       >
         {loading ? "Processing" : "Execute"}
       </LoadingButton>

@@ -67,27 +67,24 @@ export default function ApproveBtn({ countIndex, time, getTransactionsData }) {
     <>
       <ToastNotify alertState={alertState} setAlertState={setAlertState} />
       <LoadingButton
-        sx={{
-          fontWeight: 400,
-          textTransform: "capitalize",
-          backgroundColor: "#171F66",
-          "&:hover": {
-            backgroundColor: "#171F66a1",
-          },
-          border: "1px solid black",
-          boxShadow: "0px 4px 18px rgba(0, 0, 0, 0.25)",
-          color: "#ffffff",
-          fontSize: "16px",
-          fontFamily: ["Russo One", "sans-serif", "sans-serif"].join(","),
-          borderRadius: "47px",
-          height: "39px",
-        }}
-        loadingPosition="end"
+        variant="contained"
+        color="primary"
         fullWidth
         loading={loading}
+        loadingPosition="end"
         disabled={loading || +time < +moment().format("X")}
         endIcon={<SendIcon />}
         onClick={approveHandler}
+        sx={{
+          fontSize: "16px",
+          height: "40px",
+          borderRadius: "16px",
+          boxShadow: "0px 2px 0px 0px #0e96a1",
+          "&:hover": {
+            boxShadow: "0px 1px 0px 0px #0e96a1",
+            transform: "translateY(1px)",
+          },
+        }}
       >
         {loading ? "Processing" : "Approve"}
       </LoadingButton>

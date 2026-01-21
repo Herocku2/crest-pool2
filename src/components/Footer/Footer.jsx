@@ -9,16 +9,13 @@ import you from "./assets/you.png";
 import medium from "./assets/medium.png";
 import telegramImg from "./assets/telegram.png";
 
-import bgfooter from "./assets/bg-footer.jpg";
 import footerLogo from "../Swap/assets/logo.png";
 
 const Footer = () => {
   return (
     <Box
       sx={{
-        background: `url(${bgfooter})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
+        bgcolor: 'background.paper',
         pt: 6,
       }}
     >
@@ -31,15 +28,15 @@ const Footer = () => {
               }}
             >
               <Box mr={1}>
-                <img src={footerLogo} alt="" width="140px" />
+                <img src={footerLogo} alt="" width="50px" />
               </Box>
               <Box>
-                <Typography variant="h3" color="#fff">
+                <Typography variant="h5" color="text.primary" fontWeight="bold">
                   The Crest Swap
                 </Typography>
                 <Box
                   fontSize="14px"
-                  color="primary.defiText"
+                  color="text.secondary"
                   my={2}
                   sx={{
                     width: "80%",
@@ -99,21 +96,22 @@ const Footer = () => {
           <Grid item md={3} xs={12}>
             <Box ml={{ xs: 7, md: 0 }}>
               <Typography
-                variant="h3"
+                variant="h5"
+                fontWeight="bold"
                 sx={{
                   mb: 2,
-                  color: "white",
+                  color: "text.primary",
                 }}
               >
                 LEGAL
               </Typography>
-              <Box fontSize="14px" color="primary.defiText">
+              <Box fontSize="14px" color="text.secondary" mb={1}>
                 Income Disclaimer
               </Box>
-              <Box fontSize="14px" color="primary.defiText">
+              <Box fontSize="14px" color="text.secondary" mb={1}>
                 Terms & Services
               </Box>
-              <Box fontSize="14px" color="primary.defiText">
+              <Box fontSize="14px" color="text.secondary" mb={1}>
                 Smart Contract
               </Box>
             </Box>
@@ -121,24 +119,22 @@ const Footer = () => {
           <Grid item md={3} xs={12} align="center">
             <Box>
               <Button
+                variant="contained"
+                color="secondary"
                 disableRipple={true}
                 sx={{
                   textAlign: "center",
-                  px: 6,
-                  py: 2,
-                  borderRadius: "18px",
+                  px: 4,
+                  py: 1.5,
+                  borderRadius: "16px",
                   textTransform: "capitalize",
-                  fontSize: { xs: "14px", md: "18px" },
-                  transition: ".2s linear",
-                  textDecoration: "none",
-                  background:
-                    "linear-gradient(90deg, #2745EA 2.94%, #CF7BF4 100%)",
-                  color: "#fff",
-                  boxShadow:
-                    "0 2px 1px rgba(3,3,3,.10196078431372549),0 3px 5px rgba(3,3,3,.10196078431372549)",
+                  fontSize: { xs: "14px", md: "16px" },
+                  fontWeight: "bold",
+                  boxShadow: "0px 4px 0px 0px #5e37ad", // Darker purple shadow
+                  transition: "all 0.1s ease",
                   "&:hover": {
-                    background:
-                      "linear-gradient(90deg, #CF7BF4 2.94%, #2745EA 100%)",
+                    transform: "translateY(2px)",
+                    boxShadow: "0px 2px 0px 0px #5e37ad",
                   },
                   zIndex: 1,
                 }}
@@ -153,13 +149,13 @@ const Footer = () => {
         </Grid>
       </Container>
       <Box
-        color="primary.light"
+        color="text.disabled"
         sx={{
           textAlign: "center",
           fontSize: "12px",
           mt: 3,
-          py: 1,
-          background: "#150e18",
+          py: 2,
+          background: "rgba(0,0,0,0.2)",
         }}
       >
         Copyright © 2023 The Crest. All Rights Reserved.

@@ -1,12 +1,14 @@
-import { useMediaQuery } from "@mui/material";
-import { Box } from "@mui/system";
+import { useMediaQuery, useTheme, Box } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { HashLink } from "react-router-hash-link";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import Dropdown from "./Dropdown";
 
 const MenuItems = ({ items, depthLevel, services }) => {
   const [dropdown, setDropdown] = useState(false);
+  const theme = useTheme();
   const matches = useMediaQuery("(max-width:600px)");
   let ref = useRef();
 
@@ -34,16 +36,20 @@ const MenuItems = ({ items, depthLevel, services }) => {
   };
 
   return (
-    <div>
-      <div>
+    <Box>
+      <Box>
         {" "}
         {services ? (
-          <div>
-            <li
-              className="menu-items"
+          <Box>
+            <Box
+              component="li"
               ref={ref}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              sx={{
+                position: 'relative',
+                listStyle: 'none',
+              }}
             >
               {items.submenu ? (
                 <>
@@ -53,17 +59,22 @@ const MenuItems = ({ items, depthLevel, services }) => {
                     aria-expanded={dropdown ? "true" : "false"}
                     onClick={() => setDropdown((prev) => !prev)}
                     style={{
-                      color: "primary.main",
+                      color: theme.palette.text.primary,
                       fontSize: matches ? "12px" : "14px",
                       fontWeight: 600,
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      display: 'flex',
+                      alignItems: 'center'
                     }}
                   >
-                    <HashLink to={items.link}>
+                    <HashLink to={items.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
                       {items.title}{" "}
                       {depthLevel > 0 ? (
-                        <span>&raquo;</span>
+                        <KeyboardArrowRightIcon fontSize="small" />
                       ) : (
-                        <span className="arrow" />
+                        <KeyboardArrowDownIcon fontSize="small" />
                       )}
                     </HashLink>
                   </button>
@@ -76,17 +87,21 @@ const MenuItems = ({ items, depthLevel, services }) => {
                   />
                 </>
               ) : (
-                <HashLink to={items.link}>{items.title}</HashLink>
+                <HashLink to={items.link} style={{ textDecoration: 'none', color: theme.palette.text.primary, fontSize: matches ? "12px" : "14px", fontWeight: 600 }}>{items.title}</HashLink>
               )}
-            </li>
-          </div>
+            </Box>
+          </Box>
         ) : (
-          <div>
-            <li
-              className="menu-items"
+          <Box>
+            <Box
+              component="li"
               ref={ref}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              sx={{
+                position: 'relative',
+                listStyle: 'none',
+              }}
             >
               {items.submenu ? (
                 <>
@@ -96,17 +111,22 @@ const MenuItems = ({ items, depthLevel, services }) => {
                     aria-expanded={dropdown ? "true" : "false"}
                     onClick={() => setDropdown((prev) => !prev)}
                     style={{
-                      color: "primary.main",
+                      color: theme.palette.text.primary,
                       fontSize: matches ? "12px" : "14px",
                       fontWeight: 600,
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      display: 'flex',
+                      alignItems: 'center'
                     }}
                   >
-                    <HashLink to={items.link}>
+                    <HashLink to={items.link} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
                       {items.title}{" "}
                       {depthLevel > 0 ? (
-                        <span>&raquo;</span>
+                        <KeyboardArrowRightIcon fontSize="small" />
                       ) : (
-                        <span className="arrow" />
+                        <KeyboardArrowDownIcon fontSize="small" />
                       )}
                     </HashLink>
                   </button>
@@ -117,13 +137,13 @@ const MenuItems = ({ items, depthLevel, services }) => {
                   />
                 </>
               ) : (
-                <HashLink to={items.link}>{items.title}</HashLink>
+                <HashLink to={items.link} style={{ textDecoration: 'none', color: theme.palette.text.primary, fontSize: matches ? "12px" : "14px", fontWeight: 600 }}>{items.title}</HashLink>
               )}
-            </li>
-          </div>
+            </Box>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

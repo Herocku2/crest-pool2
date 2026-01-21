@@ -2,87 +2,114 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 let theme = createTheme({
   palette: {
+    mode: 'dark',
     primary: {
-      main: "#ffffff",
-      light: "#ffffff",
-      defiText: "#9f9aae",
+      main: "#1FC7D4", // Cyan
+      contrastText: "#ffffff",
     },
     secondary: {
-      main: "#06044a",
-      light: "#4c02f1",
+      main: "#9A6AFF", // Lighter Purple for better contrast on dark
+      contrastText: "#ffffff",
+    },
+    background: {
+      default: "#09070C", // Deep dark
+      paper: "rgba(32, 29, 41, 0.6)",   // Semi-transparent for glassmorphism
     },
     text: {
-      primary: "#231E30",
-      secondary: "white",
+      primary: "#F4EEFF",
+      secondary: "#B8ADD2",
     },
     success: {
-      main: "#ffffff",
+      main: "#31D0AA",
+    },
+    error: {
+      main: "#ED4B9E",
+    },
+    warning: {
+      main: "#FFB237",
     },
   },
   fontFamily: ["Nunito Sans", "sans-serif"].join(","),
   typography: {
-    // --------Theme for main landing pages--------
-    h1: {
-      fontSize: "54px",
-      fontWeight: "700",
-      fontFamily: ["Nunito Sans", "sans-serif"].join(","),
-      color: "linear-gradient(90deg, #2745EA 2.94%, #CF7BF4 100%)",
-    },
-    h2: {
-      fontSize: "32px",
-      fontWeight: "700",
-      color: "#ffffff",
-    },
-    h3: {
-      fontSize: "20px",
-      fontWeight: "600",
-      color: "#ffffff",
-    },
-    body1: {
-      fontSize: "18px",
-      fontWeight: "400",
-      color: "#656776",
-    },
-    ////////////////////////////////////////////
-    // --------Theme for dashBoard pages--------
-    h4: {
-      fontSize: "21px",
-      fontWeight: "700",
-      color: "white",
-    },
-    h5: {
-      fontSize: "27px",
-      fontWeight: "700",
-      color: "white",
-    },
-    body2: {
+    fontFamily: ["Nunito Sans", "sans-serif"].join(","),
+    h1: { fontWeight: 800, color: "#F4EEFF" },
+    h2: { fontWeight: 800, color: "#F4EEFF" },
+    h3: { fontWeight: 700, color: "#F4EEFF" },
+    h4: { fontWeight: 700, color: "#F4EEFF" },
+    body1: { color: "#F4EEFF" },
+    body2: { color: "#B8ADD2" },
+    button: {
+      textTransform: "none",
+      fontWeight: 700,
       fontSize: "16px",
-      color: "white",
-    },
-
-    subtitle1: {
-      fontSize: "12px",
-      color: "white",
-    },
-    subtitle2: {
-      fontSize: "14px",
-      color: "white",
     },
   },
-  // direction: "rtl",
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "24px",
+          boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+          transition: "all 0.3s ease-in-out",
+          "&:hover": {
+             transform: "translateY(-2px)",
+             boxShadow: "0px 6px 15px rgba(0,0,0,0.2)",
+          },
+        },
+        containedPrimary: {
+          background: "linear-gradient(90deg, #1FC7D4 0%, #15A0AB 100%)",
+          boxShadow: "0px 4px 15px rgba(31, 199, 212, 0.4)",
+          "&:hover": {
+            boxShadow: "0px 6px 20px rgba(31, 199, 212, 0.6)",
+          }
+        },
+        containedSecondary: {
+          background: "linear-gradient(90deg, #7645D9 0%, #5E37AD 100%)",
+          boxShadow: "0px 4px 15px rgba(118, 69, 217, 0.4)",
+          "&:hover": {
+             boxShadow: "0px 6px 20px rgba(118, 69, 217, 0.6)",
+          }
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: "32px",
+          backgroundImage: "none",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.05)",
+          boxShadow: "0px 10px 40px rgba(0,0,0,0.2)",
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: "32px",
+          backgroundColor: "#201D29",
+          border: "1px solid rgba(255,255,255,0.05)",
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          borderRadius: "20px",
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: "20px",
+          backgroundColor: "#27262C",
+          border: "1px solid rgba(255,255,255,0.05)",
+        },
+      },
+    },
+  },
 });
-
-// theme.overrides = {
-//   MuiCssBaseline: {
-//     "@global": {
-//       body: {
-//         fontFamily: "Roboto",
-//         backgroundColor: "#000000",
-//         color: "#ffffff",
-//       },
-//     },
-//   },
-// };
 
 theme = responsiveFontSizes(theme);
 

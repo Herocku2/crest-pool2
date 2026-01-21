@@ -6,34 +6,18 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import Button from '@mui/material/Button'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import { makeStyles } from '@mui/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Paper, Box, Typography, Stack } from '@mui/material'
 import clsx from 'clsx'
-import './Dropdown.css'
 import { HashLink } from 'react-router-hash-link'
 
 import logo from './Swap/assets/logo.png'
 import { useAccount } from 'wagmi'
 
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-  paper: {
-    background: '#050505 !important',
-    // justifyContent: "center",
-  },
-})
-
 export default function Header({ fixed, adminsArray }) {
   // const { account, connect, disconnect } = useContext(AppContext);
   const { address } = useAccount()
   // let address = "0xf2d5fcb7861120726c6dc130ca4bdb13f0cf4785";
-  const classes = useStyles()
   const [state, setState] = React.useState({
     left: false,
   })
@@ -58,19 +42,19 @@ export default function Header({ fixed, adminsArray }) {
     setState({ ...state, [anchor]: open })
   }
   const list = (anchor) => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-      })}
+    <Box
+      sx={{
+        width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250,
+        background: (theme) => theme.palette.background.paper,
+        height: '100%'
+      }}
       role='presentation'
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Box display='flex' justifyContent='center' my={10}>
+      <Box display='flex' justifyContent='center' my={5}>
         <HashLink to={'/'} style={{ textDecoration: 'none' }}>
           <Stack direction='row' alignItems='center' spacing={1}>
-            <img width='70px' src={logo} alt='' />
-            <Typography variant='h3' color='white'>
+            <img width='50px' src={logo} alt='' />
+            <Typography variant='h5' color='text.primary' fontWeight="bold">
               The Crest Swap
             </Typography>
           </Stack>
@@ -86,13 +70,14 @@ export default function Header({ fixed, adminsArray }) {
         >
           <a href={'https://tctplus.com/'} style={{ textDecoration: 'none' }}>
             <Box
-              fontSize='17px'
+              fontSize='16px'
+              fontWeight="600"
               sx={{
                 textDecoration: 'none',
                 cursor: 'pointer',
-                color: 'white',
+                color: 'text.secondary',
                 '&:hover': {
-                  color: '#D39900',
+                  color: 'primary.main',
                 },
               }}
             >
@@ -113,9 +98,9 @@ export default function Header({ fixed, adminsArray }) {
                 sx={{
                   textDecoration: 'none',
                   cursor: 'pointer',
-                  color: 'white',
+                  color: 'text.secondary',
                   '&:hover': {
-                    color: '#D39900',
+                    color: 'primary.main',
                   },
                 }}
               >
@@ -138,9 +123,9 @@ export default function Header({ fixed, adminsArray }) {
               sx={{
                 textDecoration: 'none',
                 cursor: 'pointer',
-                color: 'white',
+                color: 'text.secondary',
                 '&:hover': {
-                  color: '#D39900',
+                  color: 'primary.main',
                 },
               }}
             >
@@ -162,9 +147,9 @@ export default function Header({ fixed, adminsArray }) {
               sx={{
                 textDecoration: 'none',
                 cursor: 'pointer',
-                color: 'white',
+                color: 'text.secondary',
                 '&:hover': {
-                  color: '#D39900',
+                  color: 'primary.main',
                 },
               }}
             >
@@ -185,9 +170,9 @@ export default function Header({ fixed, adminsArray }) {
               sx={{
                 textDecoration: 'none',
                 cursor: 'pointer',
-                color: 'white',
+                color: 'text.secondary',
                 '&:hover': {
-                  color: '##D39900',
+                  color: 'primary.main',
                 },
               }}
             >
@@ -196,7 +181,7 @@ export default function Header({ fixed, adminsArray }) {
           </a>
         </ListItem>
       </List>
-    </div>
+    </Box>
   )
 
   const [colorChange, setColorchange] = useState(false)
@@ -214,13 +199,13 @@ export default function Header({ fixed, adminsArray }) {
       display='flex'
       justifyContent='space-between'
       alignItems='center'
-      style={{
-        background: colorChange ? '#050505' : fixed ? '#050505' : 'transparent',
+      sx={{
+        background: (theme) => colorChange ? theme.palette.background.default : fixed ? theme.palette.background.default : 'transparent',
         position: 'fixed',
         zIndex: '100',
+        height: '90px',
+        width: '100%'
       }}
-      height='90px'
-      width='100%'
     >
       <Container maxWidth='xl'>
         <Box display='flex' justifyContent='space-between' alignItems='center'>
@@ -233,8 +218,8 @@ export default function Header({ fixed, adminsArray }) {
           >
             <HashLink to={'/'} style={{ textDecoration: 'none' }}>
               <Stack direction='row' alignItems='center' spacing={1}>
-                <img width='70px' src={logo} alt='' />
-                <Typography variant='h3' color='white'>
+                <img width='50px' src={logo} alt='' />
+                <Typography variant='h5' color='text.primary' fontWeight="bold">
                   The Crest Swap
                 </Typography>
               </Stack>
@@ -262,9 +247,9 @@ export default function Header({ fixed, adminsArray }) {
                     sx={{
                       textDecoration: 'none',
                       cursor: 'pointer',
-                      color: 'white',
+                      color: 'text.secondary',
                       '&:hover': {
-                        color: '#D39900',
+                        color: 'primary.main',
                       },
                     }}
                   >
@@ -281,9 +266,9 @@ export default function Header({ fixed, adminsArray }) {
                     sx={{
                       textDecoration: 'none',
                       cursor: 'pointer',
-                      color: 'white',
+                      color: 'text.secondary',
                       '&:hover': {
-                        color: '#D39900',
+                        color: 'primary.main',
                       },
                     }}
                   >
@@ -303,9 +288,9 @@ export default function Header({ fixed, adminsArray }) {
                         sx={{
                           textDecoration: 'none',
                           cursor: 'pointer',
-                          color: 'white',
+                          color: 'text.secondary',
                           '&:hover': {
-                            color: '#D39900',
+                            color: 'primary.main',
                           },
                         }}
                       >
@@ -323,9 +308,9 @@ export default function Header({ fixed, adminsArray }) {
                     sx={{
                       textDecoration: 'none',
                       cursor: 'pointer',
-                      color: 'white',
+                      color: 'text.secondary',
                       '&:hover': {
-                        color: '#D39900',
+                        color: 'primary.main',
                       },
                     }}
                   >
@@ -344,9 +329,9 @@ export default function Header({ fixed, adminsArray }) {
                     sx={{
                       textDecoration: 'none',
                       cursor: 'pointer',
-                      color: 'white',
+                      color: 'text.secondary',
                       '&:hover': {
-                        color: '#D39900',
+                        color: 'primary.main',
                       },
                     }}
                   >
@@ -364,16 +349,20 @@ export default function Header({ fixed, adminsArray }) {
                     style={{ zIndex: 1 }}
                   >
                     <MenuIcon
-                      style={{
+                      sx={{
                         fontSize: '38px',
                         cursor: 'pointer',
-                        color: 'white',
+                        color: 'text.primary',
                       }}
                     ></MenuIcon>
                   </Button>
-                  <Paper style={{ background: '#1C0D38' }}>
+                  <Paper>
                     <SwipeableDrawer
-                      classes={{ paper: classes.paper }}
+                      PaperProps={{
+                        sx: {
+                          background: (theme) => `${theme.palette.background.default} !important`,
+                        }
+                      }}
                       anchor={anchor}
                       open={state[anchor]}
                       onClose={toggleDrawer(anchor, false)}

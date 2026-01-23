@@ -1,7 +1,9 @@
 import tokenAbi from './tokenAbi.json'
 import buySellAbi from './buySellAbi.json'
+import localSellDeskAbi from './localSellDeskAbi.json'
+import pancakeRouterAbi from './pancakeRouterAbi.json'
 import { ethers, Contract } from 'ethers'
-import { usdtAddress, buySellAddress, tokenAddres } from './environment'
+import { usdtAddress, buySellAddress, tokenAddres, localSellDeskAddress, pancakeRouterAddress } from './environment'
 import { Alert, Slide, Snackbar } from '@mui/material'
 import React, { useEffect } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -73,6 +75,12 @@ export function useUsdtContract(signer) {
 }
 export function useBuySellContract(signer) {
   return useContract(buySellAddress, buySellAbi, signer)
+}
+export function useLocalSellDeskContract(signer) {
+  return useContract(localSellDeskAddress, localSellDeskAbi, signer)
+}
+export function usePancakeRouterContract(signer) {
+  return useContract(pancakeRouterAddress, pancakeRouterAbi, signer)
 }
 
 function SlideTransition(props) {

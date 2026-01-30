@@ -1,4 +1,6 @@
 import React from "react";
+import { Buffer } from "buffer";
+window.Buffer = Buffer;
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
@@ -12,7 +14,7 @@ import { EthereumClient } from "@web3modal/ethereum";
 import { WagmiConfig } from "wagmi";
 import { Web3Modal } from "@web3modal/react";
 import { chains, wagmiClient, projectId } from "./wagmi";
-window.process = {};
+
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>

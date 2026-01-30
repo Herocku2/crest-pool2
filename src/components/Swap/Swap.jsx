@@ -220,16 +220,12 @@ export const Swap = () => {
     try {
       if (!fromAmount) return
 
+      // Check if LocalSellDesk address is valid
+      const isLocalSellDeskValid = localSellDeskAddress && localSellDeskAddress !== '0x0000000000000000000000000000000000000000'
+
       // For display only "To" amount
       if (buyPosition) {
          // Buying TCT with USDT (Pancake V3)
-         // We don't have a Quoter contract instantiated easily here for V3 without more setup.
-         // For now, maybe just use the Manual Price as an approximation or leave empty?
-         // User asked for "Precio Pancake v3" display.
-         // Let's use the manual price from LocalSellDesk as a fallback for the "Estimate"
-         // OR better, since we can't easily quote V3 without the Quoter contract (different from Router),
-         // we will skip V3 accurate quoting in this quick implementation unless we add Quoter ABI.
-         // Let's just use a placeholder or manual price.
          
          const usdtDecimal = await usdtContract.decimals()
          const tokenDecimal = await tokenContract.decimals()
@@ -237,21 +233,28 @@ export const Swap = () => {
          // Rough estimate using manual price (even though it's for selling, it gives an idea)
          // Real app should use V3 Quoter.
          const amountIn = parseUnits(fromAmount.toString(), usdtDecimal)
-         // Inverse of manual price? 
-         // manualPrice is USDT per TCT.
-         // Buying TCT with USDT. AmountTCT = AmountUSDT / Price
-         const price = await localSellDeskContract.manualPriceE18() // USDT per TCT (1e18)
-         // amountIn (USDT) * 1e18 / price (USDT/TCT) = TCT
          
-         // This is just visual estimation
-         if (price.gt(0)) {
-            // (amountIn * 1e18) / price
-            const estimatedTCT = amountIn.mul(parseUnits('1', 18)).div(price)
-            settoAmount(formatUnits(estimatedTCT, tokenDecimal))
+         if (isLocalSellDeskValid) {
+            const price = await localSellDeskContract.manualPriceE18() // USDT per TCT (1e18)
+            
+            if (price.gt(0)) {
+                // (amountIn * 1e18) / price
+                const estimatedTCT = amountIn.mul(parseUnits('1', 18)).div(price)
+                settoAmount(formatUnits(estimatedTCT, tokenDecimal))
+            } else {
+                settoAmount('0')
+            }
+         } else {
+             settoAmount('0')
          }
 
       } else {
          // Selling TCT (LocalSellDesk)
+         if (!isLocalSellDeskValid) {
+             settoAmount('0')
+             return
+         }
+
          const tokenDecimal = await tokenContract.decimals()
          const amountIn = parseUnits(fromAmount.toString(), tokenDecimal)
          const quote = await localSellDeskContract.quoteUSDT(amountIn)
@@ -265,6 +268,12 @@ export const Swap = () => {
   }
   const calculateTctPrice = async () => {
     try {
+      // Check if LocalSellDesk address is valid
+      if (!localSellDeskAddress || localSellDeskAddress === '0x0000000000000000000000000000000000000000') {
+          setTctPrice('0.00')
+          return
+      }
+
       // Use Manual Price from LocalSellDesk as the reference price
       const priceE18 = await localSellDeskContract.manualPriceE18()
       const price = parseFloat(formatUnits(priceE18, 18))

@@ -23,11 +23,12 @@ import {
   useTokenContract,
   useLocalSellDeskContract,
   usePancakeRouterContract,
+  usePancakeQuoterContract,
   getCommas,
 } from '../../ConnectivityAss/hooks'
 import { formatUnits, parseUnits } from '@ethersproject/units'
 import Loading from '../../LoadingSvg'
-import { buySellAddress, localSellDeskAddress, pancakeRouterAddress } from '../../ConnectivityAss/environment'
+import { buySellAddress, localSellDeskAddress, pancakeRouterAddress, tokenAddres, usdtAddress } from '../../ConnectivityAss/environment'
 import Transactions from '../transactions/Transactions'
 import { LoadingButton } from '@mui/lab'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -79,19 +80,29 @@ export const Swap = () => {
   }
   let init = async () => {
     try {
-      // Keep existing balance checks if needed, but primarily focus on LocalSellDesk stats
-      let [bnbBalance, tctBalance, manualPriceE18, dailyCapUSDT, usedTodayUSDT] = await Promise.all([
+      const promises = [
         signer ? signer.getBalance() : Promise.resolve(0),
-        tokenContract.balanceOf(address || buySellAddress), // fallback to buySellAddress if no user
-        localSellDeskContract.manualPriceE18(),
-        localSellDeskContract.dailyCapUSDT(),
-        localSellDeskContract.usedTodayUSDT(),
-      ])
+        tokenContract.balanceOf(address || buySellAddress),
+      ];
+      
+      const isLocalSellDeskValid = localSellDeskAddress && localSellDeskAddress !== '0x0000000000000000000000000000000000000000';
+      
+      if (isLocalSellDeskValid) {
+        promises.push(localSellDeskContract.manualPriceE18());
+        promises.push(localSellDeskContract.dailyCapUSDT());
+        promises.push(localSellDeskContract.usedTodayUSDT());
+      } else {
+        promises.push(Promise.resolve(parseUnits('0', 18)));
+        promises.push(Promise.resolve(parseUnits('0', 18)));
+        promises.push(Promise.resolve(parseUnits('0', 18)));
+      }
+
+      let [bnbBalance, tctBalance, manualPriceE18, dailyCapUSDT, usedTodayUSDT] = await Promise.all(promises);
       
       setpoolReserves({
         bnbBalance: formatUnits(bnbBalance),
-        busdBalance: '0', // Not tracking contract balance anymore here
-        tctBalance: formatUnits(tctBalance, 12), // Assuming 12 decimals based on old code, check if needed
+        busdBalance: '0', 
+        tctBalance: formatUnits(tctBalance, 12), 
       })
 
       setManualPrice(formatUnits(manualPriceE18, 18))

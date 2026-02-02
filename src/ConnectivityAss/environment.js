@@ -8,6 +8,7 @@ export const tokenAddres = '0x2D8931C368fE34D3d039Ab454aFc131342A339B5'//mainnet
 
 export const localSellDeskAddress = '0x0000000000000000000000000000000000000000'; // REPLACE WITH DEPLOYED CONTRACT ADDRESS
 export const pancakeRouterAddress = '0x13f4EA83D8Bd408061109B58d30642cb367781c9'; // PancakeSwap V3 Router BSC Mainnet
+export const pancakeQuoterAddress = '0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997'; // PancakeSwap V3 QuoterV2 BSC Mainnet
 
 
 export const url =

@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 // import TablePagination from '@mui/material/TablePagination';
 import TableRow from "@mui/material/TableRow";
 
-import SendIcon from "@mui/icons-material/Send";
+import { Send as SendIcon } from "@mui/icons-material";
 import {
   Box,
   Button,

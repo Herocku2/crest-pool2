@@ -31,9 +31,7 @@ import Loading from '../../LoadingSvg'
 import { buySellAddress, localSellDeskAddress, pancakeRouterAddress, tokenAddres, usdtAddress } from '../../ConnectivityAss/environment'
 import Transactions from '../transactions/Transactions'
 import { LoadingButton } from '@mui/lab'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import ReplyIcon from '@mui/icons-material/Reply'
+import { KeyboardArrowDown as KeyboardArrowDownIcon, Refresh as RefreshIcon, Reply as ReplyIcon } from '@mui/icons-material'
 
 export const Swap = () => {
   const [anchorEl, setAnchorEl] = useState(null)

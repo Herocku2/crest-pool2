@@ -1,8 +1,7 @@
 import { useMediaQuery, useTheme, Box } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { HashLink } from "react-router-hash-link";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowRight as KeyboardArrowRightIcon } from '@mui/icons-material';
 
 import Dropdown from "./Dropdown";
 

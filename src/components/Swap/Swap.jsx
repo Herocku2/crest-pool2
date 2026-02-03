@@ -281,7 +281,16 @@ export const Swap = () => {
     try {
       // Fetch price from PancakeSwap V3 Quoter
       // Pool Address: 0x4bC40440E313CDDd60b473A02Cb839469FeFbd3f (Fee 2500)
-      const amountIn = parseUnits('1', 18)
+      let tctDecimals = 18
+      try {
+        if (tokenContract) {
+          tctDecimals = await tokenContract.decimals()
+        }
+      } catch (e) {
+        console.warn('Could not fetch TCT decimals, defaulting to 18', e)
+      }
+      
+      const amountIn = parseUnits('1', tctDecimals)
       const params = {
         tokenIn: tokenAddres,
         tokenOut: usdtAddress,
@@ -338,12 +347,12 @@ export const Swap = () => {
   }
 
   useEffect(() => {
-    if (pancakeQuoterContract && tokenAddres && usdtAddress) {
+    if (pancakeQuoterContract && tokenAddres && usdtAddress && tokenContract) {
         calculateTctPrice()
         const interval = setInterval(calculateTctPrice, 15000) // Update every 15s
         return () => clearInterval(interval)
     }
-  }, [pancakeQuoterContract, tokenAddres, usdtAddress])
+  }, [pancakeQuoterContract, tokenAddres, usdtAddress, tokenContract])
   const fetchBalances = async () => {
     if (address && signer) {
       try {

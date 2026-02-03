@@ -47,7 +47,7 @@ body::after {
   100% { transform: translate(30px, 50px); }
 }
 
-/* Web3Modal Z-Index Fix */
+/* Web3Modal Z-Index Fix - Force Deploy */
 :root {
   --w3m-z-index: 2147483647 !important;
 }

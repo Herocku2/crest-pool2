@@ -47,7 +47,7 @@ export const Swap = () => {
   const [fromAmount, setfromAmount] = useState('')
   const [toAmount, settoAmount] = useState('')
   const [loading, setloading] = useState(false)
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
   const [tctPrice, setTctPrice] = useState('0')
   const [usdtBalance, setUsdtBalance] = useState('0')
   const [bnbBalance, setBnbBalance] = useState('0')

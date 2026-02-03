@@ -277,25 +277,59 @@ export const Swap = () => {
   }
   const calculateTctPrice = async () => {
     try {
-      // Check if LocalSellDesk address is valid
-      if (!localSellDeskAddress || localSellDeskAddress === '0x0000000000000000000000000000000000000000') {
-          setTctPrice('0.00')
-          return
+      // Fetch price from PancakeSwap V3 Quoter
+      // Pool Address: 0x4bC40440E313CDDd60b473A02Cb839469FeFbd3f (Fee 2500)
+      const amountIn = parseUnits('1', 18)
+      const params = {
+        tokenIn: tokenAddres,
+        tokenOut: usdtAddress,
+        amountIn: amountIn,
+        fee: 2500,
+        sqrtPriceLimitX96: 0
       }
-
-      // Use Manual Price from LocalSellDesk as the reference price
-      const priceE18 = await localSellDeskContract.manualPriceE18()
-      const price = parseFloat(formatUnits(priceE18, 18))
-      // If we want to check PancakeSwap V3 Spot Price, we need the Pool Address and slot0
-      // For now, sticking to manual price as the "Official Sell Price"
       
-      const formattedTctPrice = price.toFixed(4) // Show more precision
+      let quote
+      try {
+        quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params)
+      } catch (e) {
+        console.warn("Quote with fee 2500 failed, trying 10000...")
+        const params10000 = { ...params, fee: 10000 }
+        try {
+          quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params10000)
+        } catch (e2) {
+           console.error("Quote failed for both fees", e2)
+           // Fallback to manual price if V3 fails
+           if (localSellDeskAddress && localSellDeskAddress !== '0x0000000000000000000000000000000000000000') {
+               const priceE18 = await localSellDeskContract.manualPriceE18()
+               const price = parseFloat(formatUnits(priceE18, 18))
+               setTctPrice(price.toFixed(4))
+               return
+           }
+           setTctPrice('0.00')
+           return
+        }
+      }
+      
+      const amountOut = quote[0] || quote
+      const usdtDecimal = await usdtContract.decimals() // Usually 18 for BSC-USD? Wait, USDT on BSC is 18 decimals?
+      // Check USDT decimals. BSC-USD is 18.
+      const price = parseFloat(formatUnits(amountOut, usdtDecimal))
+      const formattedTctPrice = price.toFixed(4)
       setTctPrice(formattedTctPrice)
+
     } catch (error) {
       console.error('Error calculating TCT price:', error)
-      setTctPrice('0.00') // Default to 0 instead of Error to look cleaner
+      setTctPrice('0.00')
     }
   }
+
+  useEffect(() => {
+    if (pancakeQuoterContract && tokenAddres && usdtAddress) {
+        calculateTctPrice()
+        const interval = setInterval(calculateTctPrice, 15000) // Update every 15s
+        return () => clearInterval(interval)
+    }
+  }, [pancakeQuoterContract, tokenAddres, usdtAddress])
   const fetchBalances = async () => {
     if (address && signer) {
       try {
@@ -649,14 +683,21 @@ export const Swap = () => {
                 }}
                 loading={loading}
                 disabled={loading}
-                onClick={address ? orderHandler : connectFn}
-              >
-                {address
-                  ? loading
-                    ? 'Processing...'
-                    : 'SWAP'
-                  : 'CONNECT WALLET'}
-              </LoadingButton>
+                onClick={() => {
+          if (isConnected && address) {
+            orderHandler()
+          } else {
+            console.log("Opening Web3Modal connection...")
+            connectFn()
+          }
+        }}
+      >
+        {isConnected && address
+          ? loading
+            ? 'Processing...'
+            : 'SWAP'
+          : 'CONNECT WALLET'}
+      </LoadingButton>
             </Box>
           </Box>
         </Grid>

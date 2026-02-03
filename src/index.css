@@ -52,11 +52,7 @@ body::after {
   --w3m-z-index: 2147483647 !important;
 }
 
-w3m-modal {
-  position: fixed;
-  z-index: 2147483647 !important;
-  inset: 0;
-}
+/* w3m-modal is removed to avoid blocking clicks */
 
 /* Ensure body doesn't clip fixed elements */
 body {

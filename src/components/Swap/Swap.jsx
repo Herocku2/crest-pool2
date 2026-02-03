@@ -40,6 +40,7 @@ export const Swap = () => {
   let buySellContract = useBuySellContract(signer)
   let localSellDeskContract = useLocalSellDeskContract(signer)
   let pancakeRouterContract = usePancakeRouterContract(signer)
+  let pancakeQuoterContract = usePancakeQuoterContract(signer)
   let usdtContract = useUsdtContract(signer)
   let tokenContract = useTokenContract(signer)
   const [buyPosition, setbuyPosition] = useState(true)

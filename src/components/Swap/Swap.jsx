@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { Container } from '@mui/system'
 import { useWeb3Modal } from '@web3modal/react'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount, useSigner, useProvider } from 'wagmi'
 import {
   gasEstimationForAll,
   gasEstimationPayable,
@@ -36,11 +36,12 @@ import { KeyboardArrowDown as KeyboardArrowDownIcon, Refresh as RefreshIcon, Rep
 export const Swap = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const { open: connectFn } = useWeb3Modal()
+  const provider = useProvider()
   let { data: signer } = useSigner()
   let buySellContract = useBuySellContract(signer)
   let localSellDeskContract = useLocalSellDeskContract(signer)
   let pancakeRouterContract = usePancakeRouterContract(signer)
-  let pancakeQuoterContract = usePancakeQuoterContract(signer)
+  let pancakeQuoterContract = usePancakeQuoterContract(provider)
   let usdtContract = useUsdtContract(signer)
   let tokenContract = useTokenContract(signer)
   const [buyPosition, setbuyPosition] = useState(true)
@@ -290,31 +291,43 @@ export const Swap = () => {
       }
       
       let quote
+      let usedFee = 2500
       try {
         quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params)
+        console.log("Price Quote (Fee 2500):", quote.toString())
       } catch (e) {
-        console.warn("Quote with fee 2500 failed, trying 10000...")
-        const params10000 = { ...params, fee: 10000 }
+        console.warn("Quote with fee 2500 failed, trying 500...")
+        const params500 = { ...params, fee: 500 }
         try {
-          quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params10000)
-        } catch (e2) {
-           console.error("Quote failed for both fees", e2)
-           // Fallback to manual price if V3 fails
-           if (localSellDeskAddress && localSellDeskAddress !== '0x0000000000000000000000000000000000000000') {
-               const priceE18 = await localSellDeskContract.manualPriceE18()
-               const price = parseFloat(formatUnits(priceE18, 18))
-               setTctPrice(price.toFixed(4))
+            quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params500)
+            usedFee = 500
+            console.log("Price Quote (Fee 500):", quote.toString())
+        } catch (e500) {
+            console.warn("Quote with fee 500 failed, trying 10000...")
+            const params10000 = { ...params, fee: 10000 }
+            try {
+              quote = await pancakeQuoterContract.callStatic.quoteExactInputSingle(params10000)
+              usedFee = 10000
+              console.log("Price Quote (Fee 10000):", quote.toString())
+            } catch (e2) {
+               console.error("Quote failed for fees 2500, 500, 10000", e2)
+               // Fallback to manual price if V3 fails
+               if (localSellDeskAddress && localSellDeskAddress !== '0x0000000000000000000000000000000000000000') {
+                   const priceE18 = await localSellDeskContract.manualPriceE18()
+                   const price = parseFloat(formatUnits(priceE18, 18))
+                   setTctPrice(price.toFixed(4))
+                   return
+               }
+               setTctPrice('0.00')
                return
-           }
-           setTctPrice('0.00')
-           return
+            }
         }
       }
       
       const amountOut = quote[0] || quote
-      const usdtDecimal = await usdtContract.decimals() // Usually 18 for BSC-USD? Wait, USDT on BSC is 18 decimals?
-      // Check USDT decimals. BSC-USD is 18.
+      const usdtDecimal = await usdtContract.decimals()
       const price = parseFloat(formatUnits(amountOut, usdtDecimal))
+      console.log(`Final Price Calculation: ${price} USDT (Fee: ${usedFee})`)
       const formattedTctPrice = price.toFixed(4)
       setTctPrice(formattedTctPrice)
 

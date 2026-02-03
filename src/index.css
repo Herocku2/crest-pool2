@@ -47,10 +47,23 @@ body::after {
   100% { transform: translate(30px, 50px); }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Web3Modal Z-Index Fix */
+:root {
+  --w3m-z-index: 2147483647 !important;
 }
+
+w3m-modal {
+  position: fixed;
+  z-index: 2147483647 !important;
+  inset: 0;
+}
+
+/* Ensure body doesn't clip fixed elements */
+body {
+  overflow-y: auto !important;
+  /* overflow-x: hidden is kept from original styles */
+}
+
 
 /* Scrollbar styles */
 ::-webkit-scrollbar {

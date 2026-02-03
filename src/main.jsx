@@ -41,7 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           ethereumClient={ethereumClient} 
           themeMode="dark"
           themeVariables={{
-            '--w3m-z-index': '999999999999',
+            '--w3m-z-index': '2147483647',
             '--w3m-overlay-backdrop-filter': 'blur(6px)'
           }}
         />

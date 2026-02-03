@@ -39,8 +39,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Web3Modal 
           projectId={projectId} 
           ethereumClient={ethereumClient} 
+          themeMode="dark"
           themeVariables={{
-            '--w3m-z-index': '10000'
+            '--w3m-z-index': '999999999999',
+            '--w3m-overlay-backdrop-filter': 'blur(6px)'
           }}
         />
       </BrowserRouter>

@@ -36,7 +36,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <WagmiConfig client={wagmiClient}>
           <App />
         </WagmiConfig>
-        <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+        <Web3Modal 
+          projectId={projectId} 
+          ethereumClient={ethereumClient} 
+          themeVariables={{
+            '--w3m-z-index': '10000'
+          }}
+        />
       </BrowserRouter>
     </ThemeProvider>
   </>
